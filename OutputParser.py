@@ -79,6 +79,7 @@ def parseHtml(id: str, ks: int=None):
         print(', '.join(hot) + '<br />', file=html_file)
         print(', '.join([str(c) for c in hot_count]) + '<br />', file=html_file)
     html_file.close()
+    return res_file
 
 if __name__ == '__main__':
     parseHtml('67427039-3f14-4aad-9dd1-f232b73986b5')
