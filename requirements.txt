@@ -1,0 +1,8 @@
+bs4
+requests
+fugashi
+fugashi[unidic-lite]
+numpy
+sklearn
+tqdm
+gensim

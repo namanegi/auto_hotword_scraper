@@ -1,8 +1,10 @@
+from msilib import schema
 from bs4 import BeautifulSoup
 import requests
 import json
 import unicodedata
 from uuid import uuid4
+from urllib.parse import urlparse
 
 class WebScraper():
     def __init__(self, key_list=[], epoch=10000):
@@ -71,7 +73,12 @@ class WebScraper():
         for a in a_pool:
             o = a.get('href')
             if o:
-                url_res.append(o[:])
+                if 'http' in o:
+                    url_res.append(o[:])
+                elif o[0] == '/':
+                    cur_url = urlparse(url)
+                    new_o = cur_url.scheme + '://' + cur_url.netloc + o
+                    url_res.append(new_o[:])
         if self.key_list != []:
             for key in self.key_list:
                 if key in resp.text:
@@ -115,11 +122,10 @@ class WebScraper():
                 print(len(self.STACK), ' URLs in pool, and ', len(sents), ' sentences recorded.')
                 if len(sents) > self.epoch:
                     break
-                for url in urls:
-                    if url not in self.VISITED and url not in self.STACK:
-                        self.STACK.append(url)
+                self.urlPooling(urls)
         self.is_scraped = True
 
 if __name__ == '__main__':
-    new_crapper = WebScraper(1000, ["猫", "犬"])
-    new_crapper.scrap()
+    new_crapper = WebScraper()
+    c, u = new_crapper.pageScraping('https://news.yahoo.co.jp/articles/090bffb9d835054a72634c3fc96023c740542aef')
+    print(u)
