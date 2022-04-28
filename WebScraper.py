@@ -5,7 +5,6 @@ import unicodedata
 from uuid import uuid4
 from urllib.parse import urlparse
 from multiprocessing import Pool
-import pickle
 
 class WebScraper:
     def __init__(self, key_list=[], epoch=10000):
@@ -16,7 +15,8 @@ class WebScraper:
             "https://corona.go.jp/news/",
             "https://news.yahoo.co.jp/",
             "https://portal.auone.jp/",
-            "https://news.livedoor.com/"
+            "https://news.livedoor.com/",
+            "https://newsdig.tbs.co.jp/"
         ]
         self.id = str(uuid4())
         self.epoch = epoch
