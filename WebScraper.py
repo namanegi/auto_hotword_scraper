@@ -65,7 +65,7 @@ class WebScraper():
         url_res = []
         try:
             resp = requests.get(url, timeout=(3.0, 7.5))
-            soup = BeautifulSoup(resp.content, 'html.parser')
+            soup = BeautifulSoup(resp.content, 'html.parser', from_encoding='utf-8')
         except:
             return content_res, url_res
         self.VISITED.add(url)
