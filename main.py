@@ -4,7 +4,7 @@ from Analysis import transform, clustering
 from OutputParser import parseHtml
 
 if __name__ == '__main__':
-    new_crapper = WebScraper(['経済'], 20000)
+    new_crapper = WebScraper(['ウクライナ'], 10000)
     new_crapper.scrap()
     if new_crapper.is_scraped:
         parseToken(new_crapper.id)

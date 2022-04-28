@@ -1,13 +1,14 @@
 from gensim.models import Word2Vec
 
-import json
-import tqdm
-
-import numpy as np
-
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
+
+import numpy as np
+
+from multiprocessing import Pool
+import json
+import tqdm
 
 def transform(id: str):
     total_epoch = 2000
@@ -46,15 +47,32 @@ def transform(id: str):
     np_file = './Temp/' + id + '_pca'
     np.save(np_file, features_2)
 
+
+def sim_k(k, ds):
+    cluster = KMeans(n_clusters=k, max_iter=5000)
+    cluster.fit(ds)
+    return silhouette_score(ds, cluster.labels_)
+
+def wrap_sim_k(args):
+    return sim_k(*args)
+
 def clustering(id: str):
+    workers = 4
     ds = np.load('./Temp/' + id + '_pca.npy')
 
     ks = [k for k in range(5, 21)]
     silhouette = []
-    for k in tqdm.tqdm(ks):
-        cluster = KMeans(n_clusters=k, max_iter=5000)
-        cluster.fit(ds)
-        silhouette.append(silhouette_score(ds, cluster.labels_))
+
+    p = Pool(workers)
+    for kh in tqdm.tqdm(range(5, 21, 4)):
+        silhouette = silhouette + p.map(wrap_sim_k, [(k, ds) for k in range(kh, kh + 4)])
+
+    # for k in tqdm.tqdm(ks):
+    #     cluster = KMeans(n_clusters=k, max_iter=5000)
+    #     cluster.fit(ds)
+    #     silhouette.append(silhouette_score(ds, cluster.labels_))
+
+
 
     best_k = ks[silhouette.index(max(silhouette))]
 
@@ -65,3 +83,4 @@ def clustering(id: str):
 
 if __name__ == '__main__':
     k = clustering('67427039-3f14-4aad-9dd1-f232b73986b5')
+    print(k)

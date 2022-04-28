@@ -14,7 +14,6 @@ def parseToken(id: str):
         data = json.load(f)
     p = 0
     while p < len(data):
-        data[p] = data[p].replace(' ', '').replace('  ', '').replace('\u3000', '').replace('\n', '')
         for i, c in enumerate(zen):
             data[p] = data[p].replace(c, han[i])
         p += 1
@@ -24,7 +23,7 @@ def parseToken(id: str):
         cur_raw = []
         cur_token = []
         for word in tagger(sent):
-            if '補助記号' in word.pos:
+            if '補助記号' in word.pos or word.pos[:2] == '記号':
                 continue
             if word.feature.lemma is None:
                 cur_raw.append(word.surface)
@@ -32,7 +31,7 @@ def parseToken(id: str):
             else:
                 cur_raw.append(word.surface)
                 cur_token.append(word.feature.lemma)
-        if 5 <= len(cur_raw) <= 64:
+        if 5 <= len(cur_raw) <= 64 and cur_raw not in raw_sent:
             raw_sent.append(cur_raw[:])
             token_sent.append(cur_token[:])
 
