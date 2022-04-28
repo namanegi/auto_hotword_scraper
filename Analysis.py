@@ -49,7 +49,7 @@ def transform(id: str):
 def clustering(id: str):
     ds = np.load('./Temp/' + id + '_pca.npy')
 
-    ks = [k for k in range(10, 21)]
+    ks = [k for k in range(5, 21)]
     silhouette = []
     for k in tqdm.tqdm(ks):
         cluster = KMeans(n_clusters=k, max_iter=5000)
@@ -64,4 +64,4 @@ def clustering(id: str):
     return best_k
 
 if __name__ == '__main__':
-    transform('71f12296-c24f-4aac-b135-119f78b80ff9')
+    k = clustering('67427039-3f14-4aad-9dd1-f232b73986b5')

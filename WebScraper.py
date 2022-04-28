@@ -1,4 +1,3 @@
-from msilib import schema
 from bs4 import BeautifulSoup
 import requests
 import json
@@ -119,7 +118,7 @@ class WebScraper():
                 p -= 1
                 cont, urls = self.pageScraping(cur_url)
                 sents = self.saveSent(cont)
-                print(len(self.STACK), ' URLs in pool, and ', len(sents), ' sentences recorded.')
+                print(len(sents), 'sentences recorded,', len(self.STACK), ' URLs in pool, and', len(self.VISITED), 'URL visited')
                 if len(sents) > self.epoch:
                     break
                 self.urlPooling(urls)
