@@ -16,7 +16,10 @@ class WebScraper:
             "https://news.yahoo.co.jp/",
             "https://portal.auone.jp/",
             "https://news.livedoor.com/",
-            "https://newsdig.tbs.co.jp/"
+            "https://newsdig.tbs.co.jp/",
+            "https://www.yomiuri.co.jp/",
+            "https://www.nikkei.com/",
+            "https://www.jiji.com/"
         ]
         self.id = str(uuid4())
         self.epoch = epoch
