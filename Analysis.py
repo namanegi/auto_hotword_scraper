@@ -2,7 +2,7 @@ from gensim.models import Word2Vec
 
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
+from sklearn.metrics import silhouette_score, silhouette_samples
 
 import numpy as np
 
@@ -12,7 +12,7 @@ import tqdm
 
 def transform(id: str):
     total_epoch = 2000
-    tick = 10
+    tick = 20
     
     file_name = './Temp/' + id + '_token.json'
     with open(file_name, 'r') as f:
@@ -79,6 +79,8 @@ def clustering(id: str):
     cluster = KMeans(n_clusters=best_k, max_iter=5000)
     cluster.fit(ds)
     np.save('./Temp/' + id + '_label', cluster.labels_)
+    sil_values = silhouette_samples(ds, cluster.labels_)
+    np.save('./Temp/' + id + '_silh', sil_values)
     return best_k
 
 if __name__ == '__main__':
